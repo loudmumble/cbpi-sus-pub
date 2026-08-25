@@ -1,0 +1,572 @@
+ean_workspace
+❯ sudo qemu-nbd --connect=/dev/nbd0 /var/lib/libvirt/images/remnux_forensic.qcow2
+qemu-nbd: Failed to blk_new_open '/var/lib/libvirt/images/remnux_forensic.qcow2': Failed to get "write" lock
+Is another process using the image [/var/lib/libvirt/images/remnux_forensic.qcow2]?
+
+~/clean_workspace
+❯ sudo modprobe nbd max_part=8
+
+~/clean_workspace
+❯ sudo qemu-nbd --connect=/dev/nbd0 /var/lib/libvirt/images/remnux_forensic.qcow2
+qemu-nbd: Failed to blk_new_open '/var/lib/libvirt/images/remnux_forensic.qcow2': Failed to get "write" lock
+Is another process using the image [/var/lib/libvirt/images/remnux_forensic.qcow2]?
+
+~/clean_workspace
+❯ ls
+󰡯 opengrep         opengrep-rules2run.py   sast_config.yaml
+ opengrep-rules   recovery_pipeline.md    semgrep-rules
+
+~/clean_workspace
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0   100G  0 disk  
+├─nbd0p1     43:1    0     1M  0 part  
+└─nbd0p2     43:2    0   100G  0 part  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+  └─sec     253:1    0 931.5G  0 crypt 
+
+~/clean_workspace
+❯ sudo umount nbd0
+umount: nbd0: no mount point specified.
+
+~/clean_workspace
+❯ sudo umount nbd0p1
+umount: nbd0p1: no mount point specified.
+
+~/clean_workspace
+❯ sudo umount /mnt/host_extraction_gate/
+umount: /mnt/host_extraction_gate/: not mounted.
+
+~/clean_workspace
+❯ sudo qemu-nbd --connect=/dev/nbd0 /var/lib/libvirt/images/remnux_forensic.qcow2 
+qemu-nbd: Failed to blk_new_open '/var/lib/libvirt/images/remnux_forensic.qcow2': Failed to get "write" lock
+Is another process using the image [/var/lib/libvirt/images/remnux_forensic.qcow2]?
+
+~/clean_workspace
+❯ sudo guestfish --ro -d remnux_forensic download /home/remnux/sterile_recovery.tar.gz ./sterile_recovery.tar.gz
+libguestfs: error: no libvirt domain called ‘remnux_forensic’: Domain not found: no domain with matching name 'remnux_forensic'
+
+~/clean_workspace
+❯ cd /var/lib/libvirt/images
+
+/var/lib/libvirt/images
+❯ sudo guestfish --ro -d remnux_forensic download /home/remnux/sterile_recovery.tar.gz ./sterile_recovery.tar.gz
+libguestfs: error: no libvirt domain called ‘remnux_forensic’: Domain not found: no domain with matching name 'remnux_forensic'
+
+/var/lib/libvirt/images
+❯ sudo guestfish --ro -d remnux_forensic.qcow2 download /home/remnux/sterile_recovery.tar.gz ./sterile_recovery.tar.gz
+libguestfs: error: no libvirt domain called ‘remnux_forensic.qcow2’: Domain not found: no domain with matching name 'remnux_forensic.qcow2'
+
+/var/lib/libvirt/images
+❯ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp5s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 1000
+    link/ether 04:7c:16:c7:a5:5c brd ff:ff:ff:ff:ff:ff
+    altname enx047c16c7a55c
+    inet6 fe80::67c:16ff:fec7:a55c/64 scope link proto kernel_ll 
+       valid_lft forever preferred_lft forever
+3: wlo1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 08:9d:f4:ac:10:43 brd ff:ff:ff:ff:ff:ff
+    altname wlp0s20f3
+    altname wlx089df4ac1043
+4: virbr0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc htb state UP group default qlen 1000
+    link/ether 52:54:00:1c:d1:34 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+5: vnet0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master virbr0 state UNKNOWN group default qlen 1000
+    link/ether fe:54:00:c2:29:ce brd ff:ff:ff:ff:ff:ff
+    inet6 fe80::fc54:ff:fec2:29ce/64 scope link proto kernel_ll 
+       valid_lft forever preferred_lft forever
+
+/var/lib/libvirt/images
+❯ sudo mount -o ro /dev/nbd0p1 /mnt/host_extraction_gate
+mount: /mnt/host_extraction_gate: wrong fs type, bad option, bad superblock on /dev/nbd0p1, missing codepage or helper program, or other error.
+       dmesg(1) may have more information after failed mount system call.
+
+/var/lib/libvirt/images
+❯ sudo modprobe nbd max_part=8
+sudo qemu-nbd --connect=/dev/nbd0 /var/lib/libvirt/images/remnux_forensic.qcow2
+qemu-nbd: Failed to blk_new_open '/var/lib/libvirt/images/remnux_forensic.qcow2': Failed to get "write" lock
+Is another process using the image [/var/lib/libvirt/images/remnux_forensic.qcow2]?
+
+/var/lib/libvirt/images
+❯ sudo umount /mnt/host_extraction_gate
+umount: /mnt/host_extraction_gate: not mounted.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd0
+/dev/nbd0 disconnected
+
+/var/lib/libvirt/images
+❯ sudo modprobe nbd max_part=8
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --connect=/dev/nbd0 /var/lib/libvirt/images/remnux_forensic.qcow2
+
+/var/lib/libvirt/images
+❯ sudo lsblk /dev/nbd0
+NAME     MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+nbd0      43:0    0  100G  0 disk 
+├─nbd0p1  43:1    0    1M  0 part 
+└─nbd0p2  43:2    0  100G  0 part 
+
+/var/lib/libvirt/images
+❯ sudo mount -o ro /dev/nbd0p1 /mnt/host_extraction_gate
+mount: /mnt/host_extraction_gate: wrong fs type, bad option, bad superblock on /dev/nbd0p1, missing codepage or helper program, or other error.
+       dmesg(1) may have more information after failed mount system call.
+
+/var/lib/libvirt/images
+❯ ls /mnt/host_extraction_gate/
+
+/var/lib/libvirt/images
+❯ cp /mnt/host_extraction_gate/home/remnux/sterile_recovery.tar.gz ~/clean_workspace//
+cp: cannot stat '/mnt/host_extraction_gate/home/remnux/sterile_recovery.tar.gz': No such file or directory
+
+/var/lib/libvirt/images
+❯ cp /mnt/host_extraction_gate/home/remnux/sterile_recovery.tar.gz ~/clean_workspace/
+cp: cannot stat '/mnt/host_extraction_gate/home/remnux/sterile_recovery.tar.gz': No such file or directory
+
+/var/lib/libvirt/images
+❯ sudo lsblk /dev/nbd0
+NAME     MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+nbd0      43:0    0  100G  0 disk 
+├─nbd0p1  43:1    0    1M  0 part 
+└─nbd0p2  43:2    0  100G  0 part 
+
+/var/lib/libvirt/images
+❯ ls /mnt
+ host_extraction_gate
+
+/var/lib/libvirt/images
+❯ sudo umount /mnt/host_extraction_gate/
+umount: /mnt/host_extraction_gate/: not mounted.
+
+/var/lib/libvirt/images
+❯ sudo mount -o ro /dev/nbd0p1 /mnt/host_extraction_gate/
+mount: /mnt/host_extraction_gate: wrong fs type, bad option, bad superblock on /dev/nbd0p1, missing codepage or helper program, or other error.
+       dmesg(1) may have more information after failed mount system call.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd0
+/dev/nbd0 disconnected
+
+/var/lib/libvirt/images
+❯ sudo mount -o ro /dev/nbd0p2 /mnt/host_extraction_gate
+mount: /mnt/host_extraction_gate: fsconfig() failed: /dev/nbd0p2: Can't lookup blockdev.
+       dmesg(1) may have more information after failed mount system call.
+
+/var/lib/libvirt/images
+❯ ls /mnt/host_extraction_gate/
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+  └─sec     253:1    0 931.5G  0 crypt 
+
+/var/lib/libvirt/images
+❯ sudo umount /dev/nbd*
+umount: /dev/nbd0: not mounted.
+umount: /dev/nbd1: not mounted.
+umount: /dev/nbd10: not mounted.
+umount: /dev/nbd11: not mounted.
+umount: /dev/nbd12: not mounted.
+umount: /dev/nbd13: not mounted.
+umount: /dev/nbd14: not mounted.
+umount: /dev/nbd15: not mounted.
+umount: /dev/nbd2: not mounted.
+umount: /dev/nbd3: not mounted.
+umount: /dev/nbd4: not mounted.
+umount: /dev/nbd5: not mounted.
+umount: /dev/nbd6: not mounted.
+umount: /dev/nbd7: not mounted.
+umount: /dev/nbd8: not mounted.
+umount: /dev/nbd9: not mounted.
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+  └─sec     253:1    0 931.5G  0 crypt 
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+  └─sec     253:1    0 931.5G  0 crypt 
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd*
+qemu-nbd: Invalid number of arguments
+Try `qemu-nbd --help' for more information.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
+qemu-nbd: Invalid number of arguments
+Try `qemu-nbd --help' for more information.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd0
+/dev/nbd0 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd1
+/dev/nbd1 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd2
+/dev/nbd2 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd3
+/dev/nbd3 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd4
+/dev/nbd4 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd5
+/dev/nbd5 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd6
+/dev/nbd6 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd7
+/dev/nbd7 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd8
+/dev/nbd8 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd9
+/dev/nbd9 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd10
+/dev/nbd10 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd11
+/dev/nbd11 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd12
+/dev/nbd12 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd13
+/dev/nbd13 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd14
+/dev/nbd14 disconnected
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect /dev/nbd15
+/dev/nbd15 disconnected
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+  └─sec     253:1    0 931.5G  0 crypt 
+
+/var/lib/libvirt/images
+❯ sudo cryptsetup luksClose /dev/mapper/sec
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect
+qemu-nbd: Invalid number of arguments
+Try `qemu-nbd --help' for more information.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd --disconnect --help
+Usage: qemu-nbd [OPTIONS] FILE
+  or:  qemu-nbd -L [OPTIONS]
+QEMU Disk Network Block Device Utility
+
+  -h, --help                display this help and exit
+  -V, --version             output version information and exit
+
+Connection properties:
+  -p, --port=PORT           port to listen on (default `10809')
+  -b, --bind=IFACE          interface to bind to (default `0.0.0.0')
+  -k, --socket=PATH         path to the unix socket
+                            (default '/var/lock/qemu-nbd-DEVICE')
+  -e, --shared=NUM          device can be shared by NUM clients (default '1')
+  -t, --persistent          don't exit on the last connection
+  -v, --verbose             display extra debugging information
+  -x, --export-name=NAME    expose export by name (default is empty string)
+  -D, --description=TEXT    export a human-readable description
+      --handshake-limit=N   limit client's handshake to N seconds (default 10)
+
+Exposing part of the image:
+  -o, --offset=OFFSET       offset into the image
+  -A, --allocation-depth    expose the allocation depth
+  -B, --bitmap=NAME         expose a persistent dirty bitmap
+
+General purpose options:
+  -L, --list                list exports available from another NBD server
+  --object type,id=ID,...   define an object such as 'secret' for providing
+                            passwords and/or encryption keys
+  --tls-creds=ID            use id of an earlier --object to provide TLS
+  --tls-authz=ID            use id of an earlier --object to provide
+                            authorization
+  --tls-hostname=HOSTNAME   override hostname used to check x509 certificate
+  -T, --trace [[enable=]<pattern>][,events=<file>][,file=<file>]
+                            specify tracing options
+  --fork                    fork off the server process and exit the parent
+                            once the server is running
+  --pid-file=PATH           store the server's process ID in the given file
+
+Kernel NBD client support:
+  -c, --connect=DEV         connect FILE to the local NBD device DEV
+  -d, --disconnect          disconnect the specified device
+
+Block device options:
+  -f, --format=FORMAT       set image format (raw, qcow2, ...)
+  -r, --read-only           export read-only
+  -s, --snapshot            use FILE as an external snapshot, create a temporary
+                            file with backing_file=FILE, redirect the write to
+                            the temporary one
+  -l, --load-snapshot=SNAPSHOT_PARAM
+                            load an internal snapshot inside FILE and export it
+                            as an read-only device, SNAPSHOT_PARAM format is
+                            'snapshot.id=[ID],snapshot.name=[NAME]', or
+                            '[ID_OR_NAME]'
+  -n, --nocache             disable host cache
+      --cache=MODE          set cache mode used to access the disk image, the
+                            valid options are: 'none', 'writeback' (default),
+                            'writethrough', 'directsync' and 'unsafe'
+      --aio=MODE            set AIO mode (native, io_uring or threads)
+      --discard=MODE        set discard mode (ignore, unmap)
+      --detect-zeroes=MODE  set detect-zeroes mode (off, on, unmap)
+      --image-opts          treat FILE as a full set of image options
+
+See <https://qemu.org/contribute/report-a-bug> for how to report bugs.
+More information on the QEMU project at <https://qemu.org>.
+
+/var/lib/libvirt/images
+❯ sudo qemu-nbd -L
+qemu-nbd: Failed to connect to '0.0.0.0:10809': Connection refused
+
+/var/lib/libvirt/images
+❯ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
+sda           8:0    0   3.6T  0 disk  
+sdb           8:16   0 476.9G  0 disk  
+sdc           8:32   0 465.8G  0 disk  
+sdd           8:48   0 903.6G  0 disk  
+nbd0         43:0    0     0B  0 disk  
+nbd1         43:16   0     0B  0 disk  
+nbd2         43:32   0     0B  0 disk  
+nbd3         43:48   0     0B  0 disk  
+nbd4         43:64   0     0B  0 disk  
+nbd5         43:80   0     0B  0 disk  
+nbd6         43:96   0     0B  0 disk  
+nbd7         43:112  0     0B  0 disk  
+nbd8         43:128  0     0B  0 disk  
+nbd9         43:144  0     0B  0 disk  
+nbd10        43:160  0     0B  0 disk  
+nbd11        43:176  0     0B  0 disk  
+nbd12        43:192  0     0B  0 disk  
+nbd13        43:208  0     0B  0 disk  
+nbd14        43:224  0     0B  0 disk  
+nbd15        43:240  0     0B  0 disk  
+nvme0n1     259:0    0   1.8T  0 disk  
+├─nvme0n1p1 259:1    0     1G  0 part  /boot
+└─nvme0n1p2 259:2    0   1.8T  0 part  
+  └─root    253:0    0   1.8T  0 crypt /home
+                                       /var/log
+                                       /var/cache/pacman/pkg
+                                       /
+nvme1n1     259:3    0   1.8T  0 disk  
+nvme2n1     259:4    0 931.5G  0 disk  
+└─nvme2n1p1 259:5    0 931.5G  0 part  

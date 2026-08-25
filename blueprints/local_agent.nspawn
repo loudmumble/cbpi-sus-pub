@@ -1,0 +1,30 @@
+# /etc/systemd/nspawn/local_agent.nspawn
+# Sovereign Runtime Triple-Lock Hardening Configuration
+
+[Exec]
+# Force the runtime container to run under an unprivileged user namespace map
+# Maps container UID 0 to an unprivileged host UID, separating it from host UID 1000
+PrivateUsers=pick
+
+# Apply a strict syscall restriction profile, dropping advanced capabilities
+Capability=none
+DropCapability=CAP_SYS_ADMIN CAP_SYS_CHROOT CAP_NET_ADMIN CAP_SYS_PTRACE
+
+# Whitelist standard system calls; block kernel module loading, routing, and raw sockets
+SystemCallFilter=@system-service @common-linux @file-system @network-io
+SystemCallFilter=~@privileged @clock @cpu-emulation @obsolete @swap
+
+[Files]
+# Mount the root directory of the agent workspace as completely read-only
+ReadOnly=yes
+
+# Create a highly volatile, ephemeral virtual memory folder for necessary cache
+Volatile=yes
+
+# Explicitly bind only a single, heavily restricted data folder for input/output
+Bind=/home/operator/agent_workspace/sandbox_io:/workspace/io
+
+[Network]
+# Sever the virtual execution environment from all network adapters
+# Blocks lateral data exfiltration and remote command-and-control loops completely
+PrivateNetwork=yes

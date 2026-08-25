@@ -1,0 +1,1 @@
+export NPM_CONFIG_IGNORE_SCRIPTS=true
