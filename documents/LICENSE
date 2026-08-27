@@ -1,0 +1,11 @@
+# Documentation Licensing Notice
+
+All text, mathematics, specifications, and academic manuscripts contained within this `documents/` directory are explicitly licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC-BY-NC-ND-4.0)** License.
+
+### 🛑 Commercial Restrictions Notice
+You are free to download, read, and share these specifications for individual academic peer review and personal defensive research. However, commercial corporate entities are strictly prohibited from:
+1. Re-publishing or duplicating this text within proprietary commercial repositories or portals.
+2. Embedding these architectural definitions into closed-source commercial documentation suites.
+3. Modifying or adapting the underlying state calculus to build downstream proprietary derivatives.
+
+To view a full copy of the CC-BY-NC-ND-4.0 legal code, visit: https://creativecommons.org
